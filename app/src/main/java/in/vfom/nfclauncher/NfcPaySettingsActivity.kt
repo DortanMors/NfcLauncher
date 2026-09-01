@@ -2,12 +2,14 @@ package `in`.vfom.nfclauncher
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.nfc.cardemulation.CardEmulation
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
+import `in`.vfom.nfclauncher.utils.startNfcSettings
 
 /**
  * Прозрачный "ярлык": сразу открывает системный экран выбора NFC-платёжного приложения
@@ -34,43 +36,6 @@ class NfcPaySettingsActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
-            when {
-                paymentAppIntents().any(::startIfAvailable) -> Unit
-                startIfAvailable(Intent(Settings.ACTION_NFC_SETTINGS)) ->
-                    showToast(R.string.nfc_payment_settings_unavailable)
-                else -> showToast(R.string.nfc_settings_unavailable)
-            }
-        } finally {
-            finish()
-            @Suppress("DEPRECATION")
-            overridePendingTransition(0, 0)
-        }
-    }
-
-    /** Экраны выбора платёжного приложения для текущей версии Android, в порядке предпочтения. */
-    private fun paymentAppIntents(): List<Intent> =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-            listOf(
-                Intent(CardEmulation.ACTION_CHANGE_DEFAULT)
-                    .putExtra(CardEmulation.EXTRA_CATEGORY, CardEmulation.CATEGORY_PAYMENT),
-                Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS),
-            )
-        } else {
-            listOf(Intent(Settings.ACTION_NFC_PAYMENT_SETTINGS))
-        }
-
-    private fun startIfAvailable(intent: Intent): Boolean =
-        try {
-            startActivity(intent)
-            true
-        } catch (_: ActivityNotFoundException) {
-            false
-        } catch (_: SecurityException) {
-            false
-        }
-
-    private fun showToast(messageRes: Int) {
-        Toast.makeText(this, messageRes, Toast.LENGTH_LONG).show()
+        startNfcSettings(this@NfcPaySettingsActivity)
     }
 }
