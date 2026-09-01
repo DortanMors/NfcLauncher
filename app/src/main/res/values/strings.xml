@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NFC Оплата</string>
+    <string name="nfc_payment_settings_unavailable">Экран выбора платёжного приложения недоступен на этой прошивке, открыт общий раздел NFC</string>
+    <string name="nfc_settings_unavailable">Не удалось открыть настройки NFC</string>
+</resources>

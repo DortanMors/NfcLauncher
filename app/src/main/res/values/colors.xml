@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_nfc_pay_background_start">#FF1E63FF</color>
+    <color name="ic_nfc_pay_background_end">#FF0A2FB8</color>
+    <color name="ic_nfc_pay_foreground">#FFFFFFFF</color>
+</resources>
